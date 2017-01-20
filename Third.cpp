@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 	in = fopen ("in.txt","r+");
 	in2 = fopen ("in2.txt","r+");
 	out = fopen ("out.txt","w");
-	out2 = fopen ("out.txt","w");	
+	out2 = fopen ("out2.txt","w");	
 	fclose(out);
 	
 	
