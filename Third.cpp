@@ -27,13 +27,13 @@ void gets_utf8(FILE *in, FILE *out)
 	char str[50];
 	ifstream f;
 	ofstream f1;
-
+	f1.open("out.txt", ios_base::app);	
     while (!feof(in))
 	{
 		buf = fgets (str,sizeof(str),in);
 		MultiByteToWideChar(1251,0,buf,-1,tbuf,100);
-		str2 = WideCharToMultiByte(4110,0,tbuf,-1,buf,100,NULL,NULL); //4110 CP_UTF8
-		f1.open("out.txt", ios_base::app);
+		str2 = WideCharToMultiByte(CP_UTF8,0,tbuf,-1,buf,100,NULL,NULL); //4110 CP_UTF8
+		
 		f1<<str2;
 	}
 }
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
 	in = fopen ("in.txt","r+");
 	out = fopen ("out.txt","w");	
-
+	fclose(out);
 	gets_utf8(in,out);
 	fclose(in);
 	fclose(out);
