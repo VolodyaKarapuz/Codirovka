@@ -27,7 +27,7 @@ using namespace std;
 
 
 
-void foo (mutex& mtx, FILE *in, FILE *out)
+void foo (FILE *in, FILE *out, int A)
 {
 	
     char *buf,str2;
@@ -39,7 +39,7 @@ void foo (mutex& mtx, FILE *in, FILE *out)
 	while (!feof(in))
 	{
 		buf = fgets (str,sizeof(str),in);
-		MultiByteToWideChar(1251,0,buf,-1,tbuf,100);
+		MultiByteToWideChar(A,0,buf,-1,tbuf,100);
 		str2 = WideCharToMultiByte(CP_UTF8,0,tbuf,-1,buf,100,NULL,NULL); //4110 CP_UTF8
 		
 		f1<<str2;
@@ -51,7 +51,7 @@ void foo (mutex& mtx, FILE *in, FILE *out)
 }
 
 
-void bar (mutex& mtx, FILE *in2, FILE *out2)
+void bar (FILE *in2, FILE *out2, int A)
 {
 	
     char *buf,str2;
@@ -63,7 +63,7 @@ void bar (mutex& mtx, FILE *in2, FILE *out2)
 	while (!feof(in2))
 	{
 		buf = fgets (str,sizeof(str),in2);
-		MultiByteToWideChar(1251,0,buf,-1,tbuf,100);
+		MultiByteToWideChar(A,0,buf,-1,tbuf,100);
 		str2 = WideCharToMultiByte(CP_UTF8,0,tbuf,-1,buf,100,NULL,NULL); //4110 CP_UTF8
 		
 		f1<<str2;
@@ -76,16 +76,16 @@ void bar (mutex& mtx, FILE *in2, FILE *out2)
 int main(int argc, char *argv[])
 {
 	FILE *in, *out, *in2, *out2;
-	mutex mtx;
-	in = fopen ("in.txt","r+");
-	in2 = fopen ("in2.txt","r+");
-	out = fopen ("out.txt","w");
-	out2 = fopen ("out2.txt","w");	
+	int A;
+	in = fopen (argv[1],"r+");
+	in2 = fopen (argv[2],"r+");
+	out = fopen (argv[3],"w");
+	out2 = fopen (argv[4],"w");	
 	fclose(out);
+	A = atoi(argv[5]); //in.txt in2.txt out.txt out2.txt 1251
 	
-	
-	thread t1 (foo, ref(mtx), ref(in), ref(out));
-	thread t2 (bar, ref(mtx), ref(in2), ref(out));
+	thread t1 (foo, in, out, A);
+	thread t2 (bar, in2, out,A);
 	
 	t1.join();
 	t2.join();
