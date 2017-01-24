@@ -75,6 +75,7 @@ void bar (FILE *in2, FILE *out2, int A)
 
 int main(int argc, char *argv[])
 {
+	string a;
 	FILE *in, *out, *in2, *out2;
 	int A;
 	in = fopen (argv[1],"r+");
